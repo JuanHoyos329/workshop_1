@@ -11,10 +11,12 @@ from query import (
     get_summary_stats
 )
 
-plt.style.use('seaborn-v0_8')
+plt.style.use('default')
 sns.set_palette("husl")
 plt.rcParams['figure.figsize'] = (12, 8)
-plt.rcParams['font.size'] = 10
+plt.rcParams['font.size'] = 11
+plt.rcParams['axes.spines.top'] = False
+plt.rcParams['axes.spines.right'] = False
 
 def clear_screen():
     import os
@@ -42,10 +44,14 @@ def plot_hires_by_technology():
         print("No data available")
         return
     df_top10 = df.head(10)
-    plt.bar(df_top10['technology_name'], df_top10['total_hires'], color='skyblue', edgecolor='navy')
+    bars = plt.bar(df_top10['technology_name'], df_top10['total_hires'],
+                   color=plt.cm.viridis(np.linspace(0.3, 0.9, len(df_top10))),
+                   edgecolor="black")
     plt.xticks(rotation=45, ha='right')
-    plt.title("Total Hires by Technology (Top 10)")
+    plt.title("Total Hires by Technology (Top 10)", fontsize=14, weight="bold")
     plt.ylabel("Total Hires")
+    plt.grid(axis="y", alpha=0.3, linestyle="--")
+
     plt.tight_layout()
     plt.show()
 
@@ -55,12 +61,13 @@ def plot_hires_by_year():
     if df is None or df.empty:
         print("No data available")
         return
-    plt.plot(df['year'], df['total_hires'], marker='o', linewidth=2, color='green')
-    plt.fill_between(df['year'], df['total_hires'], alpha=0.3, color='lightgreen')
-    plt.title("Hiring Trend Over Years")
+    plt.plot(df['year'], df['total_hires'], marker='o', linewidth=2, color='steelblue')
+    plt.fill_between(df['year'], df['total_hires'], alpha=0.2, color='steelblue')
+    plt.title("Hiring Trend Over Years", fontsize=14, weight="bold")
     plt.xlabel("Year")
     plt.ylabel("Total Hires")
-    plt.grid(True, alpha=0.3)
+    plt.grid(True, alpha=0.4, linestyle="--")
+    plt.tight_layout()
     plt.show()
 
 # 3. Hires by Seniority
@@ -69,9 +76,15 @@ def plot_hires_by_seniority():
     if df is None or df.empty:
         print("No data available")
         return
-    colors = plt.cm.Set3(np.linspace(0, 1, len(df)))
-    plt.pie(df['total_hires'], labels=df['seniority_name'], autopct='%1.1f%%', colors=colors, startangle=90)
-    plt.title("Hire Distribution by Seniority Level")
+    colors = plt.cm.Set2(np.linspace(0, 1, len(df)))
+    wedges, texts, autotexts = plt.pie(
+        df['total_hires'], labels=df['seniority_name'],
+        autopct='%1.1f%%', colors=colors, startangle=90,
+        wedgeprops={'edgecolor': 'white'}
+    )
+    plt.setp(autotexts, size=9, weight="bold", color="black")
+    plt.title("Hire Distribution by Seniority Level", fontsize=14, weight="bold")
+    plt.tight_layout()
     plt.show()
 
 # 4. Hires by Country (focus countries only)
@@ -81,15 +94,16 @@ def plot_hires_by_country_years():
         print("No data available")
         return
     focus = ["USA", "Brazil", "Colombia", "Ecuador"]
-    df_focus = df[df['country_name'].isin(focus)]
     for country in focus:
-        country_data = df_focus[df_focus['country_name'] == country]
-        plt.plot(country_data['year'], country_data['total_hires'], marker='o', linewidth=2, label=country)
-    plt.title("Hiring Trends by Country")
+        country_data = df[df['country_name'] == country]
+        plt.plot(country_data['year'], country_data['total_hires'],
+                 marker='o', linewidth=2, label=country)
+    plt.title("Hiring Trends by Country", fontsize=14, weight="bold")
     plt.xlabel("Year")
     plt.ylabel("Total Hires")
-    plt.legend()
-    plt.grid(True, alpha=0.3)
+    plt.legend(frameon=False)
+    plt.grid(True, alpha=0.3, linestyle="--")
+    plt.tight_layout()
     plt.show()
 
 # 5. Hire Rate Analysis (Top techs only)
@@ -99,9 +113,12 @@ def plot_hire_rate_analysis():
         print("No data available")
         return
     df_top = df.head(8)
-    plt.barh(df_top['technology_name'], df_top['hire_rate_percentage'], color='lightcoral')
+    bars = plt.barh(df_top['technology_name'], df_top['hire_rate_percentage'],
+                    color=plt.cm.plasma(np.linspace(0.4, 0.9, len(df_top))))
     plt.xlabel("Hire Rate (%)")
-    plt.title("Top Technologies by Hire Rate")
+    plt.title("Top Technologies by Hire Rate", fontsize=14, weight="bold")
+    plt.grid(axis="x", alpha=0.3, linestyle="--")
+
     plt.tight_layout()
     plt.show()
 
@@ -111,10 +128,17 @@ def plot_experience_analysis():
     if df is None or df.empty:
         print("No data available")
         return
-    plt.bar(df['range_label'], df['hire_rate_percentage'], color='gold')
-    plt.xticks(rotation=45)
-    plt.title("Hire Rate by Experience Range")
+    bars = plt.bar(df['range_label'], df['hire_rate_percentage'],
+                   color=plt.cm.cividis(np.linspace(0.3, 0.8, len(df))))
+    plt.xticks(rotation=45, ha="right")
+    plt.title("Hire Rate by Experience Range", fontsize=14, weight="bold")
     plt.ylabel("Hire Rate (%)")
+    plt.grid(axis="y", alpha=0.3, linestyle="--")
+
+    for bar in bars:
+        plt.text(bar.get_x() + bar.get_width()/2, bar.get_height(),
+                 f"{bar.get_height():.1f}%", ha="center", va="bottom", fontsize=9)
+
     plt.tight_layout()
     plt.show()
 

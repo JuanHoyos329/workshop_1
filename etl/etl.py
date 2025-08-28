@@ -53,17 +53,15 @@ def transform(df: pd.DataFrame) -> dict:
     df['hired_flag'] = ((df.get('code_challenge_score', 0) >= 7) &
                         (df.get('technical_interview_score', 0) >= 7)).astype(int)
 
-    # Candidate - Ensure unique keys
+    # Candidate - Create unique keys for ALL records (even duplicated emails)
     fallback_series = pd.Series(['missing_email_' + str(i) for i in df.index], index=df.index)
     df['email_filled'] = df.get('email').fillna(fallback_series)
     
-    # Create unique candidate_key based on email
-    unique_emails = df['email_filled'].drop_duplicates().reset_index(drop=True)
-    email_to_key = {email: idx + 1 for idx, email in enumerate(unique_emails)}
-    df['candidate_key'] = df['email_filled'].map(email_to_key)
+    # Create unique candidate_key for EVERY ROW (not just unique emails)
+    df['candidate_key'] = range(1, len(df) + 1)
     
-    # Create dimension table with unique candidates only
-    dim_candidate = df[['candidate_key','email','first_name','last_name']].drop_duplicates().rename(columns={"yoe": "exactyoe"}).reset_index(drop=True)
+    # Create dimension table with ALL candidates (keep duplicated emails as separate entries)
+    dim_candidate = df[['candidate_key','email','first_name','last_name']].copy().reset_index(drop=True)
 
     # Date - Use incremental keys instead of date strings
     date_df = df[['application_date_parsed']].drop_duplicates().dropna().reset_index(drop=True)
