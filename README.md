@@ -131,12 +131,6 @@ All KPIs are queried directly from the **DW (MySQL)**, never from the CSV.
 
 ---
 
-### 📷 How to Add an Image (e.g., `star_schema.png`)
-
-To display your diagram in the README (on GitHub):
-
-```markdown
 ## 📊 Dimensional Model (Star Schema)
 
-![Star Schema](Star Schema.png)
-```
+![Star Schema](Star_Schema.png)
