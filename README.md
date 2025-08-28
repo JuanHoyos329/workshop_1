@@ -140,13 +140,3 @@ To display your diagram in the README (on GitHub):
 
 ![Star Schema](Star Schema.png)
 ```
-
-🔹 Notes:
-
-* The path should match your repo’s structure (`etl/star_schema.png` if inside `etl/`).
-* GitHub automatically renders PNG/JPG inside markdown.
-* Keep the image inside your repo (don’t use local paths like `C:\...`).
-
----
-
-👉 ¿Quieres que te lo prepare en formato **README.md completo en inglés** (con el snippet de imagen ya insertado) para que lo pegues directo a tu repo?
