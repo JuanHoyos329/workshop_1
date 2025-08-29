@@ -17,18 +17,21 @@ It simulates a technical interview challenge, where an **end-to-end ETL pipeline
 ```bash
 .
 ├── csv/
-│   └── candidates.csv        # Initial dataset (50k random records)
-├── etl/
-    ├── main.py               # Entry point, ETL orchestration
-    ├── etl.py                # Extract & Transform
-    ├── db.py                 # Table creation and SQL backup
-    ├── connection.py         # MySQL connection
-    ├── query.py              # SQL queries for KPIs
-    ├── visualization.py      # KPI visualization dashboard
-    ├── workshop.sql          # Automatically generated SQL backup
-    ├── star_schema.png       # Dimensional model diagram (add image)
-    ├── README.md             # Project documentation
-    └── .gitignore            # Ignored files
+│   └── candidates.csv        
+└── etl/
+    ├── main.py               
+    ├── etl.py                
+    ├── db.py                 
+    ├── connection.py         
+    ├── query.py              
+    ├── visualization.py      
+    ├── workshop.sql          
+    └── star_schema.png       
+│ 
+├── README.md                 
+├── requeriments.txt
+├── Star_Schema.png
+└── workshop.sql
 ```
 
 ---
@@ -49,7 +52,6 @@ It simulates a technical interview challenge, where an **end-to-end ETL pipeline
 
 ```bash
 git clone https://github.com/JuanHoyos329/workshop_1.git
-cd ./workshop_1/etl/
 ```
 
 2. **Install dependencies**:
@@ -67,6 +69,7 @@ DB_CONFIG = {
     "password": "your_password",
     "database": "etl_workshop"
 }
+
 ```
 
 4. **Run the ETL pipeline**:
